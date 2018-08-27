@@ -13,6 +13,12 @@ class HomeView(TemplateView):
         context['posts'] = Post.objects.filter(
             is_published=True
         ).order_by('-published_at')[:10]
+
+        context.update({
+            'some_list': [1, 2, 3],
+            'some_dict': {'var1': 1, 'var2': 2},
+            'some_str': "<b>Some text here</b>"
+        })
         return context
 
 

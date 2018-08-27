@@ -10,5 +10,8 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     published_at = models.DateTimeField(blank=True, null=True)
 
+    def some_function(self):
+        return "Test"
+
     def __str__(self):
         return self.title
