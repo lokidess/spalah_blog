@@ -3,37 +3,12 @@
 
 {% block content %}
 
-    {{ block.super }}
-
-    {{ some_list.0|add:2 }}
-
-    {{ some_dict.var1 }}
-
-    {% with a='test' %}
-        {{ a }}
-    {% endwith %}
-
-    {{ some_str }}
-
-    !{{ some_value|default:12 }}!
-
-    <br>
-    <hr>
-    {% formula 2 3 4 %}
-    <hr>
-
-    {% some_inc %}
-
     {% for post in posts %}
     <div class="card">
       <div class="card-body">
         <h5 class="card-title">{{ post.title }}</h5>
         <p class="card-text">
-            {{ forloop.counter }}. {{post.body|remove_q:'&' }}
-            <br>
-            {% now "jS F Y H:i" %}
-            <br>
-            {{ forloop.counter }}. {{ post.some_function }}
+            {{ post.body|safe }}
         </p>
         <a href="#" class="card-link">Read-more</a>
         <a href="#" class="card-link">{{ post.owner.username }}</a>

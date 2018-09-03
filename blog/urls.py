@@ -16,7 +16,9 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 
-from core.views import HomeView, AddNewPostView, Profile
+from core.views import HomeView, AddNewPostView, Profile, FilterView
+from django.conf import settings
+
 
 urlpatterns = [
     url(r'^$', HomeView.as_view(), name='home'),
@@ -25,5 +27,12 @@ urlpatterns = [
     url(r'^profile/', Profile.as_view(), name='profile'),
     url(r'^edit_post/(?P<pk>\d+)/', AddNewPostView.as_view(), name='edit_post'),
     url(r'^add_post/', AddNewPostView.as_view(), name='add_post'),
+    url(r'^filter_form/', FilterView.as_view()),
     url(r'', include('django.contrib.auth.urls')),
 ]
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns = [
+        url(r'^__debug__/', include(debug_toolbar.urls)),
+    ] + urlpatterns

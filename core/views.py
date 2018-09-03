@@ -1,8 +1,10 @@
 from django.utils import timezone
 from django.views.generic import TemplateView, FormView
 
-from core.forms import AddPostForm
+from core.forms import AddPostForm, FilterForm
 from core.models import Post
+# from blog.settings import SOME_MY_SETTING
+from django.conf import settings
 
 
 class HomeView(TemplateView):
@@ -16,10 +18,14 @@ class HomeView(TemplateView):
 
         context.update({
             'some_list': [1, 2, 3],
-            'some_dict': {'var1': 1, 'var2': 2},
-            'some_str': "<b>Some text here</b>"
+            'my_setting': settings.SOME_MY_SETTING
         })
         return context
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data()
+        context['some'] = 'value'
+        return self.render_to_response(context)
 
 
 class AddNewPostView(FormView):
@@ -55,4 +61,10 @@ class Profile(TemplateView):
         context['not_published'] = user_posts.filter(
             is_published=False
         )
+
         return context
+
+
+class FilterView(FormView):
+    template_name = "filters.html"
+    form_class = FilterForm
