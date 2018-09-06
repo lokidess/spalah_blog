@@ -12,6 +12,12 @@
         </p>
         <a href="#" class="card-link">Read-more</a>
         <a href="#" class="card-link">{{ post.owner.username }}</a>
+        <div>
+            Tags:
+            {% for tag in post.tags.all %}
+                <span class="badge badge-success">{{ tag.name }}</span>
+            {% endfor %}
+        </div>
       </div>
     </div>
     <br>

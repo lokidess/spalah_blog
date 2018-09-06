@@ -1,3 +1,5 @@
+from django.contrib.auth.models import User
+from django.db.models import Count, Q, F
 from django.utils import timezone
 from django.views.generic import TemplateView, FormView
 
@@ -12,13 +14,20 @@ class HomeView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(HomeView, self).get_context_data(**kwargs)
-        context['posts'] = Post.objects.filter(
-            is_published=True
-        ).order_by('-published_at')[:10]
+        context['posts'] = Post.objects.get_home_posts()
+
+        # posts_counts = User.objects.all().annotate(Count('post'))
+        # import pprint
+        # pprint.pprint(
+        #     [
+        #         {'name': x.username, 'post_count': x.post__count}
+        #         for x in posts_counts
+        #     ]
+        # )
 
         context.update({
             'some_list': [1, 2, 3],
-            'my_setting': settings.SOME_MY_SETTING
+            'my_setting': settings.SOME_MY_SETTING,
         })
         return context
 

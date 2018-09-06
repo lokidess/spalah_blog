@@ -1,6 +1,15 @@
 from django.contrib.auth.models import User
 from django.db import models
 
+from core.managers import PostManager
+
+
+class Tags(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
 
 class Post(models.Model):
 
@@ -17,7 +26,6 @@ class Post(models.Model):
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255,
                             help_text="URL like line",
-                            unique=True,
                             verbose_name='URL like str')
     body = models.TextField()
     owner = models.ForeignKey(User)
@@ -26,6 +34,9 @@ class Post(models.Model):
     published_at = models.DateTimeField(blank=True, null=True)
     file = models.FileField(upload_to="posts_files", blank=True, null=True)
     type = models.IntegerField(null=True, choices=TYPE_CHOICES)
+    tags = models.ManyToManyField(Tags)
+
+    objects = PostManager()
 
     def some_function(self):
         return "Test"
