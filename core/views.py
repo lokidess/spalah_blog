@@ -25,10 +25,16 @@ class HomeView(TemplateView):
         #         for x in posts_counts
         #     ]
         # )
-
+        if 'view_count' not in self.request.session:
+            self.request.session['view_count'] = 0
+        self.request.session['view_count'] += 1
+        self.request.session.save()
+        print(dir(self.request))
+        print(self.request.META.keys())
         context.update({
             'some_list': [1, 2, 3],
             'my_setting': settings.SOME_MY_SETTING,
+            'view_count': self.request.session['view_count']
         })
         return context
 

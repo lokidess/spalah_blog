@@ -46,6 +46,12 @@ class Post(models.Model):
         return self.title
 
 
+class Image(models.Model):
+    post = models.ForeignKey(Post)
+    image = models.ImageField()
+    description = models.CharField(blank=True, max_length=255)
+
+
 def send_mail_on_new_post(**kwargs):
     if kwargs['created']:
         print('Email was sent!')
