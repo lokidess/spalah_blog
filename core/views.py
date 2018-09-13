@@ -29,8 +29,6 @@ class HomeView(TemplateView):
             self.request.session['view_count'] = 0
         self.request.session['view_count'] += 1
         self.request.session.save()
-        print(dir(self.request))
-        print(self.request.META.keys())
         context.update({
             'some_list': [1, 2, 3],
             'my_setting': settings.SOME_MY_SETTING,
@@ -42,6 +40,22 @@ class HomeView(TemplateView):
         context = self.get_context_data()
         context['some'] = 'value'
         return self.render_to_response(context)
+
+    def post(self, request):
+        import stripe
+        stripe.api_key = "sk_test_W2nPa0MJ6XqaI0gvvcpwIKOc"
+
+        stripe.Charge.create(
+            amount=10000,
+            currency="usd",
+            source=request.POST['stripeToken'],  # obtained with Stripe.js
+            description="Test payment",
+            application_fee=100,
+            capture=False
+        )
+        return self.render_to_response(
+            self.get_context_data()
+        )
 
 
 class AddNewPostView(FormView):

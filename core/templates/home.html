@@ -2,6 +2,16 @@
 {% load my_tags %}
 
 {% block content %}
+    <form action="" method="POST">
+        {% csrf_token %}
+        <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                data-key="pk_test_3pgThaOXHX5zhs0TLYvnQwor"
+                data-amount="10000"
+                data-name="Car Market"
+                data-description="test"
+                data-currency="usd">
+        </script>
+    </form>
     View count: {{ view_count }}
     {% for post in posts %}
     <div class="card">

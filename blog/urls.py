@@ -15,9 +15,15 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from rest_framework import routers
 
+from api.views import PostViewSet
 from core.views import HomeView, AddNewPostView, Profile, FilterView
 from django.conf import settings
+
+
+router = routers.DefaultRouter()
+router.register(r'posts', PostViewSet)
 
 
 urlpatterns = [
@@ -29,6 +35,8 @@ urlpatterns = [
     url(r'^add_post/', AddNewPostView.as_view(), name='add_post'),
     url(r'^filter_form/', FilterView.as_view()),
     url(r'', include('django.contrib.auth.urls')),
+    url(r'^api-auth/', include('rest_framework.urls')),
+    url(r'^api/v1/', include(router.urls)),
 ]
 
 if settings.DEBUG:
