@@ -1,5 +1,8 @@
+from datetime import timedelta
+
 from django.contrib.auth.models import User
 from django.db.models import Count, Q, F
+from django.db.models.functions import datetime
 from django.utils import timezone
 from django.views.generic import TemplateView, FormView
 
@@ -7,6 +10,8 @@ from core.forms import AddPostForm, FilterForm
 from core.models import Post, Tags
 # from blog.settings import SOME_MY_SETTING
 from django.conf import settings
+
+from core.tasks import test_task
 
 
 class HomeView(TemplateView):
@@ -17,6 +22,8 @@ class HomeView(TemplateView):
         post = Post.objects.all().order_by('-created_at').first()
         post.tags.add(Tags.objects.get(id=4))
         context['posts'] = Post.objects.get_home_posts()
+        # test_task.apply_async(eta=timezone.now() + timedelta(seconds=10))
+        # test_task.apply_async(countdown=10)
         # posts_counts = User.objects.all().annotate(Count('post'))
         # import pprint
         # pprint.pprint(
